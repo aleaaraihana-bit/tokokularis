@@ -1,0 +1,5 @@
+<?php
+require_once 'functions.php';require_role(['admin','kasir']);$rows=$pdo->query("SELECT t.*,p.nama_pelanggan,u.nama AS kasir FROM tbl_transaksi t LEFT JOIN tbl_pelanggan p ON p.id_pelanggan=t.id_pelanggan LEFT JOIN users u ON u.id_user=t.id_user WHERE t.status='selesai' ORDER BY t.id_transaksi DESC")->fetchAll();layout_header('Riwayat Transaksi');
+?>
+<div class="page-title"><div><span class="eyebrow">TRANSAKSI SELESAI</span><h1>Riwayat transaksi</h1></div></div><div class="table-wrap"><table><thead><tr><th>Nomor</th><th>Tanggal</th><th>Pelanggan</th><th>Kasir</th><th>Total</th><th>Nota</th></tr></thead><tbody><?php foreach($rows as $r):?><tr><td><?=e($r['nomor_transaksi'])?></td><td><?=e($r['tanggal'])?></td><td><?=e($r['nama_pelanggan']??'-')?></td><td><?=e($r['kasir']??'-')?></td><td><?=rupiah($r['total_bayar'])?></td><td><a class="btn btn-outline btn-sm" href="struk.php?id=<?=$r['id_transaksi']?>">Lihat Nota</a></td></tr><?php endforeach;?></tbody></table></div>
+<?php layout_footer(); ?>
